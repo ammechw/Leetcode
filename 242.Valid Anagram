@@ -1,0 +1,36 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length()){
+            return false;
+        }
+        if(s == null && t == null){
+            return true;
+        }
+        if(s == null || t == null){
+            return false;
+        }
+        
+        /*
+         // first method, sort the array and then compare the value of two string
+         char[] ss = s.toCharArray();
+         Arrays.sort(ss);
+         char[] tt = t.toCharArray();
+         Arrays.sort(tt);
+         return String.valueOf(ss).equals(String.valueOf(tt));  
+        */
+        
+        
+        // // Second method: change it to int in the array and then check
+        int [] count = new int[26];
+        for(char c : s.toCharArray()){
+            count[c - 'a']++;
+        }
+        for(char d : t.toCharArray()){
+            count[d - 'a']--;
+            if(count[d - 'a'] < 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
