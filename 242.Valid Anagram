@@ -21,13 +21,14 @@ class Solution {
         
         
         // // Second method: change it to int in the array and then check
-        int [] count = new int[26];
+        // use count[(int)c] is better than count[c - 'a'] since there are might be some special character
+        int [] count = new int[256];
         for(char c : s.toCharArray()){
-            count[c - 'a']++;
+            count[(int) c ]++;
         }
         for(char d : t.toCharArray()){
-            count[d - 'a']--;
-            if(count[d - 'a'] < 0){
+            count[(int) d]--;
+            if(count[(int) d] < 0){
                 return false;
             }
         }
