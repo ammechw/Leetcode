@@ -1,0 +1,86 @@
+class Coordinate{
+    int x, y;
+    public Coordinate(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+
+public class Solution {
+    /*
+     * @param grid: a 2D integer grid
+     * @return: an integer
+     */
+     
+    public int Zombie = 1;
+    public int People = 0;
+    public int Wall = 2;
+    
+    public int zombie(int[][] grid) {
+        //edge case
+        if(grid == null || grid.length == 0|| grid[0].length == 0){
+            return -1;
+        }
+        int row = grid.length;
+        int col = grid[0].length;
+       
+      
+        Queue<Coordinate> queue = new LinkedList<Coordinate>();
+        int people = 0;
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(grid[i][j] == Zombie){
+                    Coordinate core = new Coordinate(i,j);
+                    queue.offer(core);
+                } else if(grid[i][j] == People){
+                    people ++ ;
+                }
+            }
+        }
+        if (people == 0){ // no people
+            return 0; 
+        }
+        return MarkZombie(queue,people,grid);
+    }
+    private int MarkZombie(Queue<Coordinate> queue, int people, int[][] grid){
+        int [] x_cord = {-1, 1, 0, 0}; //up, down, left, right
+        int [] y_cord = {0, 0, -1, 1};
+        int row = grid.length;
+        int col = grid[0].length;
+        int result = 0;
+        while(!queue.isEmpty()){
+            //level traversal
+           result++ ; // add one day
+           int size = queue.size(); // this make sure that the queue.size not change for each level
+           for(int i = 0; i < size; i++){
+             Coordinate core = queue.poll();
+             for(int j = 0; j < 4; j++){
+                Coordinate neighbor = new Coordinate(core.x + x_cord[j],core.y + y_cord[j]);
+                if(!inBound(neighbor,grid)){
+                    continue;
+                }
+                if(grid[neighbor.x][neighbor.y] == People){
+                    grid[neighbor.x][neighbor.y] = Zombie;
+                    queue.offer(neighbor);
+                    people -- ;
+                }
+                if(people == 0){
+                    return result;
+                }
+             }
+          }
+        }
+        return -1;  
+        
+    }
+    private boolean inBound(Coordinate core, int[][]grid){
+        int x = core.x;
+        int y = core.y;
+        int n = grid.length;
+        int m = grid[0].length;
+        return x>=0 && x < n && y >= 0 && y < m;
+    }
+        
+       
+    
+}
